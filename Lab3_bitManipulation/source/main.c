@@ -19,23 +19,21 @@ int main(void) {
     
     DDRC = 0xFF; PORTC = 0x00; //Configuring port c's 8 pins as outputs
 
+	unsigned char numBits = 0;
+	unsigned char counter = 0;
+	unsigned char inputA = 0x00;
     /* Insert your solution below */
     while (1) {
-		char counter = 0;
-		//char counter2 = 0;
-		char numBits = 0;
+		//char bitPointer = 0;
+		
+		inputA = PINA;
 		while(counter < 8) {
-			if((PINA & 0x80) == 0x80) {
-				PORTC = PORTC + 1;
-				PINA = PINA << 1;
+			if((inputA & 0x80) == 0x80) {
+				PORTC++;
 			}
-			if((PINB & 0x80) == 0x80) {
-				PORTC = PORTC + 1;
-				PINB = PINB << 1;
-			}
-			counter = counter + 1;
+			inputA = inputA << 1;
+			counter++;
 		}
-		//PORTC = numBits;
 	}
     return 1;
 }

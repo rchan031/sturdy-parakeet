@@ -1,10 +1,8 @@
-Breakpoint 1 at 0xee: file source/main.c, line 23.
+Breakpoint 1 at 0xf0: file source/main.c, line 23.
 Note: automatically using hardware breakpoints for read-only addresses.
-======================================================
-Running all tests..."
-
-"PINA: 0x5A, PINB: 0xA5, PORTC: 0x80"...
-	Expected 8 
-	PORTC '0x800028:	0x10
-======================================================
-Quitting: Remote doesn't know how to detach
+30			while(counter < 8) {
+31				if((inputA & 0x80) == 0x80) {
+32					PORTC++;
+Undefined command: "printinputA".  Try "help".
+$1 = 255 '\377'
+Could not kill the program being debugged

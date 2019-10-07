@@ -30,7 +30,7 @@ test "PINA: 0x5A, PINB: 0xA5, PORTC: 0x80"
 setPINA 0x5A
 setPINB 0xA5
 continue 2
-expectPORTC 8
+expectPORTC 4
 checkResult
 
 # Report on how many tests passed/tests ran
