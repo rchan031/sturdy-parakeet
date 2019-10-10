@@ -22,9 +22,6 @@ int main(void) {
    
     while (1) {
 		PORTC = 0;
-		if((PINA & 0x00) == 0x00) {
-			PORTC = 0x00;
-		}
 		if((PINA & 0x01) == 0x01) {
 			PORTC = 0x60;
 		}
@@ -69,12 +66,6 @@ int main(void) {
 		}
 		if((PINA & 0x0F) == 0x0F) {
 			PORTC = 0x3F;
-		}
-		
-		if(((PINA & 0x10) == 0x10) && ((PINA & 0x20) == 0x20)) {
-			if((PINA & 0x40) != 0x40) {
-				PORTC = PORTC | 0x80; 
-			}
 		}
 	}
     return 1;

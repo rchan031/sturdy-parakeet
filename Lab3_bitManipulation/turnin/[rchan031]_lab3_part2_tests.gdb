@@ -27,6 +27,12 @@ echo ======================================================\n
 echo Running all tests..."\n\n
 
 
+test "PINA: 0x02, PORTC: 0x60"
+setPINA 0x02
+continue 2
+expectPORTC 0x60
+checkResult
+
 test "PINA: 0x06, PORTC: 0x38"
 setPINA 0x06
 continue 2
@@ -37,12 +43,6 @@ test "PINA: 0x0A, PORTC: 0x3E"
 setPINA 0x0A
 continue 2
 expectPORTC 0x3E
-checkResult
-
-test "PINA: 0x3A, PORTC: 0xBE"
-setPINA 0x3A
-continue 2
-expectPORTC 0xbe
 checkResult
 
 # Report on how many tests passed/tests ran
