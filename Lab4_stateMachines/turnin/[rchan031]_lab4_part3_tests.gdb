@@ -26,40 +26,41 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
+test "PINA: 0x04, => PORTB: 0x00";
+set state = locked
+setPINA 0x04
+continue 1
+expect state s1
+expectPORTB 0x00
+checkResult
+
+test "PINA: 0x02, => PORTB: 0x01";
+setPINA 0x02
+continue 1
+expect state s2
+expectPORTB 0x01
+checkResult
+
+test "PINA: 0x08, => PORTB: 0x00";
+setPINA 0x08
+continue 1
+expect state locked
+expectPORTB 0x00
+checkResult
+
+test "PINA: 0x04, => PORTC: 0x00";
+setPINA 0x04
+continue 1
+expect state s1
+expectPORTB 0x00
+checkResult
+
 test "PINA: 0x01, => PORTC: 0x09";
-set state = wait
 setPINA 0x01
 continue 1
-setPINA 0x00
-continue 1
-setPINA 0x01
-continue 1
-setPINA 0x00
-continue 1
-expectPORTC 0x09
+expect state locked
+expectPORTB 0x00
 checkResult
-
-test "PINA: 0x03, => PORTC: 0x07";
-set state = wait
-
-setPINA 0x03
-continue 1
-setPINA 0x00
-continue 1
-expectPORTC 0x07
-checkResult
-
-test "PINA: 0x02, => PORTC: 0x05";
-set state = wait
-setPINA 0x02
-continue 1
-setPINA 0x00
-continue 1
-setPINA 0x02
-continue 1
-expectPORTC 0x05
-checkResult
-
 
 
 # Add tests below
