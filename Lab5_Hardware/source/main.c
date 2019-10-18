@@ -11,67 +11,81 @@
 #ifdef _SIMULATE_
 #include "simAVRHeader.h"
 #endif
+void tickFct();
+enum States {initialState, wait, increment, decrement, reset} state;
+unsigned char output = 0x00; 
 
 int main(void) {
     /* Insert DDR and PORT initializations */
-    DDRA = 0x00; PORTA = 0xFF;  //Configure port A's 8 pins as inputs
-    DDRB = 0x00; PORTB = 0xFF; //Configuring port B's 8 pins as inputs
-    DDRC = 0xFF; PORTC = 0x00; //Configuring port c's 8 pins as outputs, init 0s
-
+    DDRA = 0x00; PORTA = 0xFF; //input
+     
+    //DDRB = 0xFF; PORTB = 0x01; //output
+    
+    DDRC = 0xFF; PORTC = 0x00; //output
+   
+	state = initialState;
+	
+	output = 0x07;
     /* Insert your solution below */
-   PORTC = 0x00;
     while (1) {
-		//PORTC = 0;
-		//
-		if((~PINA & 0x00) == 0x00) {
-			PORTC = 0x40;
-		}
-		if((~PINA & 0x01) == 0x01) {
-			PORTC = 0x60;
-		}
-		if((~PINA & 0x02) == 0x02) {
-			PORTC = 0x60;
-		}
-		if((~PINA & 0x03) == 0x03) {
-			PORTC = 0x70;
-		}
-		if((~PINA & 0x04) == 0x04) {
-			PORTC = 0x70;
-		}
-		if((~PINA & 0x05) == 0x05) {
-			PORTC = 0x38;
-		}
-		if((~PINA & 0x06) == 0x06) {
-			PORTC = 0x38;
-		}
-		if((~PINA & 0x07) == 0x07) {
-			PORTC = 0x3C;
-		}
-		if((~PINA & 0x08) == 0x08) {
-			PORTC = 0x3C;
-		}
-		if((~PINA & 0x09) == 0x09) {
-			PORTC = 0x3C;
-		}
-		if((~PINA & 0x0A) == 0x0A) {
-			PORTC = 0x3E;
-		}
-		if((~PINA & 0x0B) == 0x0B) {
-			PORTC = 0x3E;
-		}
-		if((~PINA & 0x0C) == 0x0C) {
-			PORTC = 0x3E;
-		}
-		if((~PINA & 0x0D) == 0x0D) {
-			PORTC = 0x3F;
-		}
-		if((~PINA & 0x0E) == 0x0E) {
-			PORTC = 0x3F;
-		}
-		if((~PINA & 0x0F) == 0x0F) {
-			PORTC = 0x3F;
-		}
-		//PORTC = 0;
-	}
+		tickFct();
+		PORTC = output;
+    }
     return 1;
 }
+
+void tickFct() {
+	switch(state) {
+		case initialState:
+			state = wait;
+			break;
+		case wait:
+			if((~PINA & 0x03) == 0x03) {
+				state = reset;
+			}
+			else if((~PINA & 0x01) == 0x01) {
+				state = increment;
+			}
+			else if((~PINA & 0x02) == 0x02) {
+				state = decrement;
+			}
+			break;
+		case increment:
+			state = wait;
+			break;
+		case decrement:
+			state = wait;
+			break;
+		case reset:
+			state = wait;
+			break;
+		default:
+			state = initialState;
+			break;
+	}
+		
+		switch(state) {
+			case initialState:
+				output = 0x07;
+				break;
+			case wait:
+				break;
+			case increment:
+				if(output < 0x09) {
+					output = output + 1;
+				}
+				break;
+			case decrement:
+				if(output > 0x00) {
+					output = output - 1;
+				}
+				break;
+			case reset:
+				output = 0x00;
+				break;
+			
+			default:
+				break;
+		}
+}
+			
