@@ -77,17 +77,13 @@ void tickFct() {
 				break;
 			case increment:
 				if((output < 0x09) && (flag != 0x01)) {
-					if(flag != 0x01) {
-						output = output + 1;
-					}
+					output = output + 1;
 					flag = 0x01;
 				}
 				break;
 			case decrement:
 				if((output > 0x00) && (flag != 0x01)) {
-					if(flag != 0x01) {
-						output = output - 1;
-					}
+					output = output - 1;
 					flag = 0x01;
 				}
 				break;
