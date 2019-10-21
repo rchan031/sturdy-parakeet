@@ -65,7 +65,7 @@ void tickFct() {
 			break;
 		default:
 			state = initialState;
-	}
+	}cp source/main.c turnin/[cslogin]_lab2_part2.c
 	switch(state) {
 		case initialState:
 			break;
@@ -85,7 +85,7 @@ void tickFct() {
 
 int main(void) {
     /* Insert DDR and PORT initializations */
-	DDRB = 0xFF; PORTB = 0x00; 
+	DDRC = 0xFF; PORTC = 0x00; 
 	TimerSet(1000);
 	TimerOn();
 	
@@ -93,7 +93,7 @@ int main(void) {
     /* Insert your solution below */
     while (1) {
 		tickFct();
-		PORTB = output;
+		PORTC = output;
 		while(!TimerFlag);
 			TimerFlag = 0x00;
     }
