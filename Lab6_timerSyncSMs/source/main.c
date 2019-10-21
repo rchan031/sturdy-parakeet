@@ -13,8 +13,9 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States {initialState, first, second, third} state;
+enum States {initialState, first, second, third, pressed} state;
 unsigned char output = 0x00;
+unsigned char flag = 0x00;
 volatile unsigned char TimerFlag = 0; 
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
@@ -56,15 +57,39 @@ void tickFct() {
 			break;
 		case first:
 			state = second;
+			if(((~PINA & 0x01) == 0x01) && (flag == 0x00)) {
+				state = pressed;
+				flag = 0x01;
+			}
 			break;
 		case second:
 			state = third;
+			if(((~PINA & 0x01) == 0x01) && (flag == 0x00)) {
+				state = pressed;
+				flag = 0x01;
+			}
 			break;
 		case third:
 			state = first;
+			if(((~PINA & 0x01) == 0x01) && (flag == 0x00)) {
+				state = pressed;
+				flag = 0x01;
+			}
+			break;
+		case pressed:
+			if((PINA & 0xFF) == 0xFF) {
+				flag = 0x00;
+			}
+			if(((~PINA & 0x01) == 0x01) && (flag == 0x00)) {
+				state = first;
+			}
+			else {
+				state = pressed;
+			}
 			break;
 		default:
 			state = initialState;
+			break;
 	}
 	switch(state) {
 		case initialState:
@@ -78,6 +103,8 @@ void tickFct() {
 		case third:
 			output = 0x04;
 			break;
+		case pressed:
+			break;
 		default:
 			break;
 	}
@@ -85,15 +112,16 @@ void tickFct() {
 
 int main(void) {
     /* Insert DDR and PORT initializations */
-	DDRB = 0xFF; PORTB = 0x00; 
-	TimerSet(1000);
+    DDRA = 0x00; PORTA =0xFF;
+	DDRC = 0xFF; PORTC = 0x00; 
+	TimerSet(300);
 	TimerOn();
 	
 	state = initialState;
     /* Insert your solution below */
     while (1) {
 		tickFct();
-		PORTB = output;
+		PORTC = output;
 		while(!TimerFlag);
 			TimerFlag = 0x00;
     }
