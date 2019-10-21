@@ -13,8 +13,8 @@
 #endif
 
 void tickFct();
-enum States {initialState, wait, increment, decrement, reset} state;
-unsigned char output = 0x00; 
+enum States {initialState, wait, transition} state;
+unsigned char output = 0x00;
 unsigned char flag = 0x00;
 
 int main(void) {
@@ -24,7 +24,7 @@ int main(void) {
    
 	state = initialState;
 	
-	output = 0x07;
+	output = 0x01;
     /* Insert your solution below */
     while (1) {
 		tickFct();
@@ -40,63 +40,58 @@ void tickFct() {
 			state = wait;
 			break;
 		case wait:
-			if((PINA & 0xFF) == 0xFF && (flag == 0x01)) {
+			if((PINA & 0xFF == 0xFF) && (flag == 0x01)) {
 				flag = 0x00;
 			}
-			if((~PINA & 0x03) == 0x03) {
-				state = reset;
-			}
-			else if((~PINA & 0x01) == 0x01) {
-				state = increment;
-			}
-			else if((~PINA & 0x02) == 0x02) {
-				state = decrement;
+			if(~PINA & 0x01 == 0x01) {
+				state = transition;
 			}
 			else {
 				state = wait;
 			}
 			break;
-		case increment:
+		case transition:
 			state = wait;
-			break;
-		case decrement:
-			state = wait;
-			break;
-		case reset:
-			state = wait;
-			break;
-		default:
-			state = initialState;
 			break;
 	}
-		
 		switch(state) {
 			case initialState:
+				output = 0x01;
 				break;
 			case wait:
 				break;
-			case increment:
-				if((output < 0x09) && (flag != 0x01)) {
-					if(flag != 0x01) {
-						output = output + 1;
-					}
+			case transition:
+				if((output == 0x01) && (flag != 0x01)) {
+					output = 0x40;
+					flag = 0x01;
+				}
+				else if((output == 0x40) && (flag != 0x01))  {
+					output = 0x02;
+					flag = 0x01;
+				}
+				else if((output == 0x02) && (flag != 0x01)) {
+					output = 0x20;
+					flag = 0x01;
+				}
+				else if((output == 0x20) && (flag != 0x01)) {
+					output = 0x04;
+					flag = 0x01;
+				}
+				else if((output == 0x04) && (flag != 0x01)) {
+					output = 0x10;
+					flag = 0x01;
+				}
+				else if((output == 0x10) && (flag != 0x01)) {
+					output = 0x08;
+					flag = 0x01;
+				}
+				else if((output == 0x08) && (flag != 0x01)) {
+					output = 0x01;
 					flag = 0x01;
 				}
 				break;
-			case decrement:
-				if((output > 0x00) && (flag != 0x01)) {
-					if(flag != 0x01) {
-						output = output - 1;
-					}
-					flag = 0x01;
-				}
-				break;
-			case reset:
-				output = 0x00;
-				break;
-			
 			default:
-				output = 0x07;
+				output = 0x01;
 				break;
 		}
 }
