@@ -13,7 +13,7 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States {initialState, first, second, third, pressed} state;
+enum States {initialState, first, second, third, stop1, stop2, stop3} state;
 unsigned char output = 0x00;
 unsigned char flag = 0x00;
 volatile unsigned char TimerFlag = 0; 
@@ -56,35 +56,63 @@ void tickFct() {
 			state = first;
 			break;
 		case first:
-			state = second;
 			if(((~PINA & 0x01) == 0x01) && (flag == 0x00)) {
-				state = pressed;
+				state = stop1;
 				flag = 0x01;
+			}
+			else {
+				state = second;
 			}
 			break;
 		case second:
-			state = third;
-			if(((~PINA & 0x01) == 0x01) && (flag == 0x00)) {
-				state = pressed;
+			if(((~PINA & 0x01) == 0x01) && (flag == 0x00)){
+				state = stop2;
 				flag = 0x01;
+			}
+			else {
+				state = third;
 			}
 			break;
 		case third:
-			state = first;
 			if(((~PINA & 0x01) == 0x01) && (flag == 0x00)) {
-				state = pressed;
+				state = stop3;
 				flag = 0x01;
 			}
+			else {
+				state = first;
+			}
 			break;
-		case pressed:
-			if((PINA & 0xFF) == 0xFF) {
+		case stop1:
+			if(((PINA & 0xFF) == 0xFF) && (flag == 0x01)) {
 				flag = 0x00;
 			}
-			if(((~PINA & 0x01) == 0x01) && (flag == 0x00)) {
+			if((~PINA & 0x01) == 0x01) {
 				state = first;
 			}
 			else {
-				state = pressed;
+				state = stop1;
+			}
+			break;
+		case stop2:
+			if(((PINA & 0xFF) == 0xFF) && (flag == 0x01)) {
+				flag = 0x00;
+			}
+			if((~PINA & 0x01) == 0x01) {
+				state = first;
+			}
+			else {
+				state = stop2;
+			}
+			break;
+		case stop3:
+			if(((PINA & 0xFF) == 0xFF) && (flag == 0x01)) {
+				flag = 0x00;
+			}
+			if((~PINA & 0x01) == 0x01) {
+				state = first;
+			}
+			else {
+				state = stop3;
 			}
 			break;
 		default:
@@ -103,7 +131,11 @@ void tickFct() {
 		case third:
 			output = 0x04;
 			break;
-		case pressed:
+		case stop1:
+			break;
+		case stop2:
+			break;
+		case stop3:
 			break;
 		default:
 			break;
