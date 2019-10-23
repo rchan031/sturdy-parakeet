@@ -65,7 +65,7 @@ void tickFct() {
 			break;
 		default:
 			state = initialState;
-	}cp source/main.c turnin/[cslogin]_lab2_part2.c
+	}
 	switch(state) {
 		case initialState:
 			break;
