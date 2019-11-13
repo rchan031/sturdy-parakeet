@@ -36,7 +36,7 @@ void PWM_off() {
 	TCCR3B = 0x00;
 }
 
-enum States {initialState, wait, C, D, E};
+enum States {initialState, wait, C, D, E} state;
 unsigned char button = 0x00;
 void tickFct() {
 	button = (~PINA & 0x07);

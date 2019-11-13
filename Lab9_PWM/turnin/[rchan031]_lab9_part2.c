@@ -36,7 +36,7 @@ void PWM_off() {
 	TCCR3B = 0x00;
 }
 
-enum States {initialState, wait, C, D, E, F, G, A, B, C2};
+enum States {initialState, wait, C, D, E, F, G, A, B, C2} state;
 unsigned char button = 0x00;
 unsigned char scaleCounter = 0x00;
 unsigned char on = 0x00;
@@ -47,7 +47,7 @@ void tickFct() {
 			state = wait;
 			break;
 		case wait:
-			if((button == 0x01() && (on == 0x00)) { //turns on if off
+			if((button == 0x01) && (on == 0x00)) { //turns on if off
 				PWM_on();
 				on = 0x01;
 				state = wait;
@@ -69,53 +69,53 @@ void tickFct() {
 				}
 			}
 			
-			if((button == 0x02) && (scaleCounter == 1) {
+			if((button == 0x02) && (scaleCounter == 1)) {
 				state = C;
 			}
-			else if((button == 0x02) && (scaleCounter == 2) {
+			else if((button == 0x02) && (scaleCounter == 2)) {
 				state = D;
 			}
-			else if((button == 0x02) && (scaleCounter == 3) {
+			else if((button == 0x02) && (scaleCounter == 3)) {
 				state = E;
 			}
-			else if((button == 0x02) && (scaleCounter == 4) {
+			else if((button == 0x02) && (scaleCounter == 4)) {
 				state = F;
 			}
-			else if((button == 0x02) && (scaleCounter == 5) {
+			else if((button == 0x02) && (scaleCounter == 5)) {
 				state = G;
 			}
-			else if((button == 0x02) && (scaleCounter == 6) {
+			else if((button == 0x02) && (scaleCounter == 6)) {
 				state = A;
 			}
-			else if((button == 0x02) && (scaleCounter == 7) {
+			else if((button == 0x02) && (scaleCounter == 7)) {
 				state = B;
 			}
-			else if((button == 0x02) && (scaleCounter == 8) {
+			else if((button == 0x02) && (scaleCounter == 8)) {
 				state = C2;
 			}
 			
-			if((button == 0x04) && (scaleCounter == 1) { //if I decrement at scale D, it should move to scale C; otherwise, should stay at scale C
+			if((button == 0x04) && (scaleCounter == 1)) { //if I decrement at scale D, it should move to scale C; otherwise, should stay at scale C
 				state = C;
 			}
-			else if((button == 0x02) && (scaleCounter == 2) {
+			else if((button == 0x02) && (scaleCounter == 2)) {
 				state = D;
 			}
-			else if((button == 0x02) && (scaleCounter == 3) {
+			else if((button == 0x02) && (scaleCounter == 3)) {
 				state = E;
 			}
-			else if((button == 0x02) && (scaleCounter == 4) {
+			else if((button == 0x02) && (scaleCounter == 4)) {
 				state = F;
 			}
-			else if((button == 0x02) && (scaleCounter == 5) {
+			else if((button == 0x02) && (scaleCounter == 5)) {
 				state = G;
 			}
-			else if((button == 0x02) && (scaleCounter == 6) {
+			else if((button == 0x02) && (scaleCounter == 6)) {
 				state = A;
 			}
-			else if((button == 0x02) && (scaleCounter == 7) {
+			else if((button == 0x02) && (scaleCounter == 7)) {
 				state = B;
 			}
-			else if((button == 0x02) && (scaleCounter == 8) {
+			else if((button == 0x02) && (scaleCounter == 8)) {
 				state = C2;
 			}
 			break;
